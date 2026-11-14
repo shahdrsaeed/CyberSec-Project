@@ -1,0 +1,156 @@
+:root {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #321414;
+    --light: #f5f5dc;
+    --accent1: #996515;
+    --accent2: #654321;
+    --dark: #321414;
+}
+
+body {
+    margin: 0;
+    background-color: var(--light);
+}
+
+header {
+    background-color: var(--accent1);
+    color: var(--light);
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: bold;
+}
+
+.header-title {
+    font-size: 1.8rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+    nav a {
+        color: var(--light);
+        text-decoration: none;
+        font-size: 1rem;
+    }
+
+        nav a:hover {
+            color: var(--accent2);
+        }
+
+.content {
+    max-width: 95%;
+    margin: 1rem;
+}
+
+.sqli-title-container {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--accent1);
+}
+
+.sqli-title {
+    color: var(--accent1);
+}
+
+form {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.tabs {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+.tab {
+    padding: 10px 16px;
+    background: blue;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--accent2);
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .tab:hover, .tab.active:hover {
+        background: var(--accent2);
+        color: var(--light);
+    }
+
+    .tab.active {
+        color: var(--accent2);
+        border-bottom-color: var(--accent2);
+    }
+
+.sqli-example-container {
+    border: 2px solid var(--accent1);
+    border-radius: 5px;
+    padding: 5% 15%;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.sqli-example {
+    display: flex;
+}
+
+    .sqli-example input {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px 0 0 6px;
+        font-size: 16px;
+    }
+
+    .sqli-example button {
+        padding: 12px 18px;
+        border: 0;
+        border-radius: 0 6px 6px 0;
+        background: #2563eb;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        .sqli-example button:hover {
+            background: #1d4ed8;
+        }
+
+.dbms-result-container {
+    padding: 1rem 1.5rem;
+    border: 2px solid var(--accent1);
+    border-radius: 5px;
+}
+
+.dbms-result-title {
+    color: var(--accent1);
+    font-size: 1.2rem;
+    padding-bottom: 1.5rem;
+}
+
+.flash-messages {
+    list-style: none;
+    padding: 0.75rem 1rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffe08a;
+    border-radius: 4px;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SQLi/DBMS Comparison System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-title">SQLi/DBMS Comparison System</div>
+        <nav>
+            <a href="{{ url_for('union') }}">Union</a>
+            <a href="{{ url_for('error') }}">Error</a>
+            <a href="{{ url_for('blind_bool') }}">Blind Boolean</a>
+            <a href="{{ url_for('blind_time') }}">Blind Time</a>
+            <a href="{{ url_for('second_order') }}">Second Order</a>
+            <a href="{{ url_for('stacked_query') }}">Stacked Query</a>
+        </nav>
+    </header>
+
+    <main class="content">
+        {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
