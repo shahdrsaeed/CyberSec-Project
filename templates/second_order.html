@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- second order sqli needs to have input that is parameterized and saved for later 
+    but that isn't sanitized when displayed allowing it to run saved queries -->
+
+<div class="sqli-title-container">
+    <div class="sqli-title">SECOND ORDER</div>
+</div>
+
+<form method="POST" action="{{ url_for('second_order') }}">
+    <input type="hidden" name="chosen_tab" value="{{ chosen_tab }}" />
+
+    <div class="sqli-example-container">
+        <div class="sqli-example">
+            <input type="text" id="query" name="query" " value="{{ query }}" placeholder="Send a message to the seller">
+            <button type="submit">Send</button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        {% for tab_name in ["none", "protection 1", "protection 2"] %}
+        <button class="tab {{ 'active' if chosen_tab == tab_name else '' }}"
+                type="submit"
+                name="tab_choice"
+                value="{{ tab_name }}">
+            {{ tab_name|capitalize }}
+        </button>
+        {% endfor %}
+    </div>
+</form>
+
+{% include "dbms_result.html" %}
+
+{% endblock %}
