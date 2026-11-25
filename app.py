@@ -8,6 +8,8 @@ Also to show different protection methods and how they hold up in different DBMS
 
 Max Krishka-Pachal 200526378
 
+In hindsight I should have turned the database connection and querying into a function to clean up this code more but oh well.
+Hunter Ruel 200403482
 """
 
 
@@ -25,6 +27,8 @@ oracleConnection = oracledb.connect(
 oracleCursor = oracleConnection.cursor()
 #oracleCursor.execute("SELECT * FROM customers;")
 #print("This is the oracle connection test: ", oracleCursor.fetchall())
+
+
 #Postgress DB connection 
 postgressConnection = psycopg2.connect(
 	database='postgres', 
@@ -54,6 +58,7 @@ def union():
 	chosen_tab = "none"
 	dbms_name = "PostgreSQL result";
 	dbms_result = "OracleDB result";
+
 	if request.method == "POST":
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
@@ -96,11 +101,15 @@ def error():
 	chosen_tab = "none"
 	dbms_name = "PostgreSQL result";
 	dbms_result = "OracleDB result";
+
 	if request.method == "POST":
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
+
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
+
 		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -119,12 +128,14 @@ def error():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = error.args
+
 		if chosen_tab == 'protection 1':
 			print("Modify queries here HELLO DUDE")
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
-	return render_template('error.html', dbms_name="test", dbms_result="test")
+
+	return render_template('error.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
 
 
 @app.route('/blindbool', methods=["GET", "POST"])
@@ -162,7 +173,7 @@ def blind_bool():
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
-	return render_template('blind_bool.html', dbms_name="test", dbms_result="test")
+	return render_template('blind_bool.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
 
 
 @app.route('/blindtime', methods=["GET", "POST"])
@@ -175,32 +186,34 @@ def blind_time():
 	if request.method == "POST":
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
-		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
+		queryExc="SELECT company_name FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
 		print("THIS IS THE CHOSEN TAB" + chosen_tab)
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
 				pythonCursor.execute(queryExc)
 				dbms_name = pythonCursor.fetchall()
+				dbms_name = "You ran succesfully how long did the query take?" 
 
 			except psycopg2.Error as e:
 				print(e.pgerror)
-				dbms_name = e.pgerror
+				dbms_name = "Sorry an error occured"
 				postgressConnection.rollback()
 
 			try:
 				#execute OracleSQL
 				oracleCursor.execute(queryExc)
 				dbms_result = oracleCursor.fetchall()
+				dbms_result = "You ran succesfully how long did the query take?" 
 			except oracledb.Error as error:
 				print(error.args)	
-				dbms_result = error.args
+				dbms_result = "Sorry an error occured"
 		if chosen_tab == 'protection 1':
 			print("Modify queries here HELLO DUDE")
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
-	return render_template('blind_time.html', dbms_name="test", dbms_result="test")
+	return render_template('blind_time.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
 
 
 @app.route('/secondorder', methods=["GET", "POST"])
@@ -238,7 +251,7 @@ def second_order():
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
-	return render_template('second_order.html', dbms_name="test", dbms_result="test")
+	return render_template('second_order.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
 
 
 @app.route('/stackedquery', methods=["GET", "POST"])
@@ -276,7 +289,7 @@ def stacked_query():
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
-	return render_template('stacked_query.html', dbms_name="test", dbms_result="test")
+	return render_template('stacked_query.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
 
 
 @app.errorhandler(404)
