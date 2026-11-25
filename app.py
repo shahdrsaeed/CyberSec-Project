@@ -56,6 +56,7 @@ def union():
 	dbms_result = "OracleDB result";
 	if request.method == "POST":
 		query = request.form.get("query", "")
+		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
 		print("THIS IS THE CHOSEN TAB" + chosen_tab)
 		if chosen_tab == "none":
@@ -70,12 +71,11 @@ def union():
 				dbms_name = e.pgerror
 			#add seperate try except statement for oracle	
 				dbms_result = e.pgerror
-		#if chosen_tab == 'protection 1':
-			#print("Modify queries here HELLO DUDE")
-		#if chosen_tab == 'protection 2':
-			#print("Run protection2: HELLO TO YOU TWO")
-			#chosen tabs bugged come back to fix. 
-		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
+		if chosen_tab == 'protection 1':
+			print("Modify queries here HELLO DUDE")
+		if chosen_tab == 'protection 2':
+			print("Run protection2: HELLO TO YOU TWO")
+		
 		
 
 	return render_template('union.html', query=query, chosen_tab=chosen_tab, dbms_name=dbms_name, dbms_result=dbms_result)
