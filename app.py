@@ -63,7 +63,7 @@ def union():
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -82,8 +82,29 @@ def union():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = error.args
+
+#Trying a paramitized query as a fix for protection one				
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
@@ -108,8 +129,6 @@ def error():
 
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
 
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
-
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -129,8 +148,28 @@ def error():
 				print(error.args)	
 				dbms_result = error.args
 
+#Pramitized Query Protection
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
@@ -145,11 +184,12 @@ def blind_bool():
 	chosen_tab = "none"
 	dbms_name = "PostgreSQL result";
 	dbms_result = "OracleDB result";
+
 	if request.method == "POST":
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -168,8 +208,30 @@ def blind_bool():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = error.args
+
+#Pramitized Query Protection
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			#this turns the query into a proper string argument to fit into the execute function the paramitization was crashing otherwise. 
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
@@ -187,7 +249,7 @@ def blind_time():
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT company_name FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -208,8 +270,29 @@ def blind_time():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = "Sorry an error occured"
+
+#Pramitized Query Protection
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
@@ -227,7 +310,7 @@ def second_order():
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -246,8 +329,29 @@ def second_order():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = error.args
+
+#Pramitized Query Protection
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
@@ -261,11 +365,12 @@ def stacked_query():
 	chosen_tab = "none"
 	dbms_name = "PostgreSQL result";
 	dbms_result = "OracleDB result";
+
 	if request.method == "POST":
 		query = request.form.get("query", "")
 		chosen_tab = request.form.get("tab_choice") or request.form.get("chosen_tab", "none")
 		queryExc="SELECT * FROM CUSTOMERS where customer_id = " +"\'" +query + "\'"
-		print("THIS IS THE CHOSEN TAB" + chosen_tab)
+
 		if chosen_tab == "none":
 			try:
 				#execute PostgreSQL
@@ -284,8 +389,28 @@ def stacked_query():
 			except oracledb.Error as error:
 				print(error.args)	
 				dbms_result = error.args
+#Pramitized Query Protection
 		if chosen_tab == 'protection 1':
-			print("Modify queries here HELLO DUDE")
+			paramtizedQuery = "SELECT * FROM CUSTOMERS where customer_id = (%s)"
+			paramtizedQueryOracle = query
+			query= (query,)
+			try:
+				#execute PostgreSQL
+				pythonCursor.execute(paramtizedQuery, query)
+				dbms_name = pythonCursor.fetchall()
+
+			except psycopg2.Error as e:
+				print(e.pgerror)
+				dbms_name = e.pgerror
+				postgressConnection.rollback()
+
+			try:
+				#execute OracleSQL
+				oracleCursor.execute(t"SELECT * FROM CUSTOMERS where customer_id =({paramtizedQueryOracle})")
+				dbms_result = oracleCursor.fetchall()
+			except oracledb.Error as error:
+				print(error.args)	
+				dbms_result = error.args
 
 		if chosen_tab == 'protection 2':
 			print("Run protection2: HELLO TO YOU TWO")
