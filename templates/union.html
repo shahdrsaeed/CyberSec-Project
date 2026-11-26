@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- union sqli must display results -->
+
+<div class="sqli-title-container">
+    <div class="sqli-title">UNION</div>
+</div>
+
+<form method="POST" action="{{ url_for('union') }}">
+    <input type="hidden" name="chosen_tab" value="{{ chosen_tab }}" />
+
+    <div class="sqli-example-container">
+        <div class="sqli-example">
+            <input type="text" id="query" name="query" value="{{ query }}" placeholder="Search Products...">
+            <button type="submit">Search</button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        {% for tab_name in ["none", "protection 1", "protection 2"] %}
+        <button class="tab {{ 'active' if chosen_tab == tab_name else '' }}"
+                type="submit"
+                name="tab_choice"
+                value="{{ tab_name }}">
+            {{ tab_name|capitalize }}
+        </button>
+        {% endfor %}
+    </div>
+</form>
+
+{% include "dbms_result.html" %}
+
+{% endblock %}
