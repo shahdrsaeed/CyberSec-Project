@@ -20,3 +20,8 @@ Hunter Ruel - 200403482 Setup database connections and ran injection tests. Also
 The SQL folder contains the queries to run in your PostgreSQL and OracleDB to setup a North Wind example.
 The Template folder contains the HTML that the viewer sees. The static folder contains the CSS for the styling of the local application.
 The app.py is the file that runs the application and manages most of the logic.
+
+
+Databases used in examples came from these queries:
+https://github.com/pthom/northwind_psql
+https://github.com/dshifflet/NorthwindOracle_DDL
